@@ -36,6 +36,8 @@ header nav ul li:hover {
 
 body {
     height: 100vh;
+    overflow-y: hidden;    
+    overflow-x: hidden;
 
     background: #5589B7;
     background: linear-gradient(50deg,
@@ -100,10 +102,11 @@ header nav ul li a {
 
 .hero {
     color: var(--text);
-
-    padding: 96px 112px;
-
+    padding: 64px 112px;
     position: relative;
+
+    display: flex; 
+    justify-content: space-between;
 }
 
 .hero .text {
@@ -152,7 +155,46 @@ header nav ul li a {
     left: 100px;
 
     width: 75%;
-    opacity: 0.1;
+    opacity: 0.05;
 
     z-index: 1;
+}
+
+/* 
+    Shoe Container
+*/
+
+.shoe-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.shoe-container div {
+    background-color: var(--accent);
+
+    width: 450px;
+    height: 450px;
+    border-radius: 100%;
+
+    position: absolute;
+    left: 150px;
+    top: 80px;
+
+    filter: contrast(1.2) blur(2px) brightness(1.05);
+
+    background: #5589B7;
+    background: linear-gradient(50deg,
+            rgba(85, 137, 183, 1) 10%,
+            rgba(217, 202, 237, 1) 100%);
+
+    z-index: 2;
+}
+
+.shoe-container img {
+    width: 750px;
+    position: relative;
+    transform: rotateZ(10deg);
+
+    z-index: 3;
 }
