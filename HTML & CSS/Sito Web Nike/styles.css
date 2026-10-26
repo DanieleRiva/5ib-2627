@@ -36,7 +36,6 @@ header nav ul li:hover {
 
 body {
     height: 100vh;
-    overflow-y: hidden;    
     overflow-x: hidden;
 
     background: #5589B7;
@@ -197,4 +196,70 @@ header nav ul li a {
     transform: rotateZ(10deg);
 
     z-index: 3;
+}
+
+/* 
+    Cards Section
+*/
+
+.cards {
+    margin-top: 64px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 64px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 16px;
+
+    position: relative;
+    width: 250px;
+
+    display: flex;
+    justify-content: end;
+    padding: 24px 16px 24px 0;
+
+    transition: all .2s;
+}
+
+.card img {
+    width: 175px;
+
+    position: absolute;
+    left: -40px;
+    top: -30px;
+}
+
+.card div {
+    width: fit-content;
+    text-align: center;
+}
+
+.card div h3 {
+    margin: 0;
+}
+
+.circle {
+    background-color: black;
+    color: white;
+
+    border-radius: 100%;
+    width: 24px;
+    height: 24px;
+    
+    font-size: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+}
+
+.card:hover {
+    transform: translateY(-3deg);
 }
