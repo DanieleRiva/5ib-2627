@@ -23,11 +23,6 @@ function func2() {
 
     let string = "";
 
-    const data = {
-        "nome": "Mario",
-        "cognome": "Rossi"
-    };
-
     console.log(data);
 
     arr.forEach(element => {
@@ -35,4 +30,28 @@ function func2() {
     });
 
     alert(string);
+}
+
+function func3() { 
+    const item = {
+        "nome": "Mario",
+        "cognome": "Rossi",
+        "voti": [
+            {
+                "materia": "matematica",
+                "voto": 3
+            },
+            {
+                "materia": "italiano",
+                "voto": 8
+            },
+        ]
+    };
+    console.log(item);
+
+
+    const divBello = document.getElementById("divMoltoBello");
+    divBello.innerHTML += "<h1>Nuovo Titolo</h1>";
+
+    console.log(divBello);
 }
