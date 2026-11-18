@@ -1,0 +1,231 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+    basicstyle=\ttfamily\small,
+    columns=fullflexible,
+    keepspaces=true,
+    showstringspaces=false,
+    frame=single,
+    rulecolor=\color{gray!60},
+    xleftmargin=1em,
+    xrightmargin=1em,
+    stringstyle=\color{teal!70!black}
+}
+
+% Comando di comodo per i nomi di id, classi, funzioni ed eventi
+\newcommand{\elem}[1]{``\textit{#1}''}
+
+\title{Esercitazione 2\\JS \& DOM}
+\author{}
+\date{Tris}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduzione}
+
+La seguente esercitazione consiste nello sviluppare il gioco del \textit{Tris}.
+Due giocatori, X e O, si alternano inserendo il proprio simbolo in una griglia
+$3 \times 3$: vince chi riesce per primo ad allineare tre simboli in
+orizzontale, in verticale o in diagonale. Se la griglia si riempie senza che
+nessuno abbia fatto tris, la partita termina in pareggio.
+
+Il gioco deve inoltre tenere traccia del punteggio, permettere ai giocatori di
+inserire il proprio nome e di annullare l'ultima mossa.
+
+Si utilizzi il codice nella cartella ``Template di partenza'' come versione
+iniziale su cui sviluppare il resto del progetto. Tutto il codice JavaScript va
+scritto in un nuovo file \textit{script.js}, da collegare opportunamente a
+\textit{index.html}. Il file \textit{styles.css} contiene già tutte le classi
+necessarie: \textbf{non è richiesto di modificarlo}.
+
+\section*{Attività 1: creare la griglia}
+
+Come prima cosa è necessario creare la griglia di gioco, che nel template è
+vuota. In particolare, è necessario:
+
+\begin{itemize}
+    \item Dichiarare un array \elem{board} di 9 elementi che rappresenta lo
+    stato della griglia. Ogni elemento contiene \texttt{""} se la casella è
+    vuota, \texttt{"X"} oppure \texttt{"O"} se è occupata. Le caselle sono
+    numerate da 0 a 8, riga per riga:
+
+\begin{lstlisting}
+ 0 | 1 | 2
+---+---+---
+ 3 | 4 | 5
+---+---+---
+ 6 | 7 | 8
+\end{lstlisting}
+
+    \item Implementare una funzione \elem{createBoard()} che, tramite un ciclo
+    \texttt{for}, crea 9 elementi \texttt{<button>} con classe \elem{cell} e li
+    inserisce dentro l'elemento \elem{board}. Ogni casella creata va anche
+    salvata (con \texttt{push()}) in un secondo array \elem{cells}, in modo
+    da poterla ritrovare in seguito tramite il suo indice: ad esempio
+    \texttt{cells[4]} è la casella centrale.
+
+    \item Implementare una funzione \elem{renderBoard()} che, tramite un ciclo
+    \texttt{for}, aggiorna il testo di tutte le caselle in base ai valori
+    contenuti in \elem{board} e ne assegna la classe:
+    \begin{itemize}
+        \item[--] \texttt{"cell x"} se la casella contiene \texttt{"X"};
+        \item[--] \texttt{"cell o"} se la casella contiene \texttt{"O"};
+        \item[--] \texttt{"cell"} se la casella è vuota.
+    \end{itemize}
+\end{itemize}
+
+\section*{Attività 2: le mosse e i turni}
+
+Dopo aver creato la griglia, è necessario permettere ai giocatori di fare le
+proprie mosse:
+
+\begin{itemize}
+    \item Utilizzare una variabile \elem{currentPlayer} per memorizzare il
+    giocatore di turno. La prima mossa spetta sempre a X.
+    \item Dentro \elem{createBoard()}, aggiungere a ogni casella un
+    \textit{listener} per l'evento di click, che chiama una funzione
+    \elem{handleClick(index)} passandole l'indice della casella cliccata (la
+    variabile del ciclo \texttt{for}).
+    \item Implementare la funzione \elem{handleClick(index)}:
+    \begin{itemize}
+        \item[--] se la casella è già occupata, la funzione termina senza fare
+        nulla;
+        \item[--] altrimenti si salva il simbolo di \elem{currentPlayer}
+        nella posizione \textit{index} dell'array, si aggiorna il DOM con
+        \elem{renderBoard()} e si passa il turno all'altro giocatore.
+    \end{itemize}
+    \item Mostrare all'interno dell'elemento \elem{status} il giocatore di
+    turno, nel formato ``Turno di: X'' oppure ``Turno di: O''.
+\end{itemize}
+
+\section*{Attività 3: chi ha vinto?}
+
+Nel Tris le combinazioni vincenti sono soltanto 8:
+
+\begin{itemize}
+    \item \textbf{righe}: 0-1-2, 3-4-5, 6-7-8
+    \item \textbf{colonne}: 0-3-6, 1-4-7, 2-5-8
+    \item \textbf{diagonali}: 0-4-8, 2-4-6
+\end{itemize}
+
+L'obiettivo è:
+
+\begin{itemize}
+    \item Implementare una funzione \elem{checkLine(a, b, c)} che riceve gli
+    indici di tre caselle e restituisce \texttt{true} se sono tutte e tre
+    occupate dallo stesso simbolo, altrimenti \texttt{false}.\\
+    \textit{Attenzione}: tre caselle vuote sono uguali tra loro, ma non
+    formano un tris!\\
+    Quando il tris viene trovato, la funzione deve anche aggiungere la classe
+    \elem{win} alle tre caselle, senza togliere quelle che hanno già (ad
+    esempio \texttt{cells[a].className += " win"}).
+
+    \item Implementare una funzione \elem{checkWinner()} che chiama
+    \elem{checkLine()} per ognuna delle 8 combinazioni e restituisce
+    \texttt{true} se almeno una di queste è un tris, altrimenti
+    \texttt{false}.
+
+    \item Implementare una funzione \elem{isDraw()} che, tramite un ciclo
+    \texttt{for}, restituisce \texttt{true} se tutte le caselle di
+    \elem{board} sono occupate.
+
+    \item In \elem{handleClick(index)}, subito dopo aver aggiornato il DOM,
+    controllare lo stato della partita:
+    \begin{itemize}
+        \item[--] se \elem{checkWinner()} restituisce \texttt{true}, stampare
+        in \elem{status} ``Ha vinto X!'' (oppure O). Il vincitore è per forza
+        \elem{currentPlayer}, cioè chi ha appena fatto la mossa;
+        \item[--] altrimenti, se \elem{isDraw()} restituisce \texttt{true},
+        stampare in \elem{status} ``Pareggio!'';
+        \item[--] in entrambi i casi la partita è terminata: impedire nuove
+        mosse (ad esempio con una variabile \elem{gameOver}) e assegnare la
+        classe \elem{locked} all'elemento \elem{board}, che rende la griglia
+        non cliccabile.
+    \end{itemize}
+\end{itemize}
+
+\section*{Attività 4: nuova partita e punteggio}
+
+\begin{itemize}
+    \item Utilizzare tre variabili per contare le vittorie di X, le vittorie di
+    O e i pareggi. Al termine di ogni partita incrementare quella corretta e
+    mostrare i valori aggiornati in \elem{score-x}, \elem{score-o} e
+    \elem{score-draw}.
+    \item Aggiungere un ascoltatore al bottone \elem{new-game-btn} che, quando
+    cliccato, svuota la griglia (sia l'array sia il DOM), toglie la classe
+    \elem{locked} da \elem{board} e riporta il turno a X, \textbf{senza}
+    azzerare il punteggio. Chiamando \elem{renderBoard()} le caselle tornano
+    ad avere solo la classe \elem{cell}, perciò anche la classe \elem{win}
+    viene rimossa.
+    \item Aggiungere un ascoltatore al bottone \elem{reset-score-btn} che azzera
+    tutti e tre i punteggi.
+\end{itemize}
+
+\section*{Attività 5: i nomi dei giocatori}
+
+Aggiungere un ascoltatore al bottone \elem{save-names-btn} che, quando cliccato,
+legge i nomi inseriti negli input \elem{name-x} e \elem{name-o} e li convalida.
+Verificare che:
+
+\begin{itemize}
+    \item[--] nessuno dei due nomi sia vuoto o composto da soli spazi (si
+    consiglia il metodo \texttt{trim()});
+    \item[--] nessuno dei due nomi superi i 12 caratteri;
+    \item[--] i due nomi siano diversi tra loro.
+\end{itemize}
+
+Se qualche controllo fallisce, stampare all'interno dell'elemento
+\elem{error-box} un messaggio di errore specifico, senza modificare i nomi.
+Altrimenti svuotare \elem{error-box} e salvare i nomi, che da questo momento
+vanno utilizzati:
+
+\begin{itemize}
+    \item nel tabellone del punteggio, al posto di ``Giocatore X'' e
+    ``Giocatore O'' (elementi \elem{label-x} e \elem{label-o});
+    \item nei messaggi di \elem{status}: ad esempio ``Turno di: Marco'' e
+    ``Ha vinto Giulia!''.
+\end{itemize}
+
+Prima che vengano salvati dei nomi, si usino come nomi predefiniti
+``Giocatore X'' e ``Giocatore O''.
+
+\section*{Attività 6: annullare l'ultima mossa}
+
+Aggiungere la possibilità di annullare l'ultima mossa effettuata, tramite il
+bottone \elem{undo-btn}:
+
+\begin{itemize}
+    \item Utilizzare un array \elem{moves} in cui, a ogni mossa, viene
+    aggiunto in fondo l'indice della casella appena occupata (metodo
+    \texttt{push()}).
+    \item Quando l'utente clicca \elem{undo-btn}, rimuovere l'ultimo indice
+    dall'array \elem{moves} (metodo \texttt{pop()}), svuotare la casella
+    corrispondente in \elem{board}, restituire il turno al giocatore che aveva
+    fatto quella mossa e aggiornare il DOM.
+    \item Il click su \elem{undo-btn} va ignorato se non è ancora stata fatta
+    nessuna mossa oppure se la partita è già terminata.
+    \item Quando inizia una nuova partita, l'array \elem{moves} va svuotato.
+\end{itemize}
+
+\section*{Attività bonus}
+
+\textit{L'attività bonus comprende argomenti \underline{non} richiesti in verifica.}
+
+\begin{itemize}
+    \item Utilizzare il \textit{localStorage} per salvare il punteggio e i nomi
+    dei giocatori, in modo che non vengano persi ricaricando la pagina.
+    \item Fare in modo che il giocatore che inizia si alterni a ogni nuova
+    partita: se la partita precedente l'ha iniziata X, la successiva la inizia
+    O, e viceversa.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,228 @@
+/*
+    Stili di Utilità
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --color-bg: #1f1b24;
+    --color-bg2: #2b2631;
+    --color-text: #fff;
+    --color-text-muted: #b3abbd;
+
+    --color-accent: #7e57c2;
+    --color-text-accent: #fff;
+
+    --color-x: #4fc3f7;
+    --color-o: #ffb74d;
+    --color-win: rgba(39, 245, 115, 0.3);
+
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+html,
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+
+    overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0;
+}
+
+/* Colore del simbolo X */
+.x {
+    color: var(--color-x) !important;
+}
+
+/* Colore del simbolo O */
+.o {
+    color: var(--color-o) !important;
+}
+
+/*
+    Stili per il progetto
+*/
+
+.wrapper {
+    margin: auto;
+    max-width: 1280px;
+    text-align: center;
+}
+
+.project-title {
+    margin: auto;
+    background-color: var(--color-accent);
+    color: var(--color-text-accent);
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.main-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 32px;
+}
+
+#status {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    min-height: 1.5em;
+}
+
+/* Griglia 3x3: basta inserire 9 elementi con classe "cell" dentro #board */
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    grid-template-rows: repeat(3, 120px);
+    gap: 12px;
+}
+
+.cell {
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+
+    background-color: var(--color-bg2);
+    color: var(--color-text);
+    border: none;
+    border-radius: 16px;
+    filter: drop-shadow(0px 0px 1px gray);
+
+    font-family: inherit;
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+
+    transition: .2s all;
+}
+
+.cell:hover {
+    filter: drop-shadow(0px 0px 4px var(--color-accent));
+}
+
+/* Casella che fa parte del tris vincente */
+.cell.win {
+    background-color: var(--color-win);
+    animation: pop .4s ease-out;
+}
+
+@keyframes pop {
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+/* Griglia bloccata (partita finita): non è possibile cliccare */
+#board.locked {
+    pointer-events: none;
+}
+
+#board.locked .cell:not(.win) {
+    opacity: 0.6;
+}
+
+.right-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 380px;
+}
+
+.players-box {
+    display: flex;
+    gap: 8px;
+}
+
+.player-field {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: start;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.player-field input {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--color-bg2);
+    color: var(--color-text);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 12px 16px;
+}
+
+#error-box {
+    color: #ff6b6b;
+    margin: 0;
+    min-height: 1.5em;
+    text-align: start;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.actions button {
+    flex: 1;
+}
+
+.score {
+    flex: 1;
+    background-color: var(--color-bg2);
+    border-radius: 16px;
+    padding: 16px 8px;
+}
+
+.score h4 {
+    font-weight: 500;
+    font-size: 0.85rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.score h2 {
+    font-size: 2rem;
+}
+
+.right-block button {
+    cursor: pointer;
+    background-color: var(--color-bg2);
+    color: var(--color-text);
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 14px 16px;
+
+    transition: .2s all;
+}
+
+.right-block button:hover {
+    background-color: var(--color-accent);
+}

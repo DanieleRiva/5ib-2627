@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercitazione 2 - JS & DOM</title>
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <div class="project-title">
+            <h1>TRIS</h1>
+        </div>
+
+        <div class="main-container">
+
+            <div class="game">
+                <p id="status">Turno di: X</p>
+
+                <!-- Le 9 caselle vanno create tramite JavaScript -->
+                <div id="board"></div>
+            </div>
+
+            <div class="right-block">
+                <div class="players-box">
+                    <div class="player-field">
+                        <label for="name-x">Nome giocatore X</label>
+                        <input id="name-x" type="text" placeholder="Giocatore X">
+                    </div>
+                    <div class="player-field">
+                        <label for="name-o">Nome giocatore O</label>
+                        <input id="name-o" type="text" placeholder="Giocatore O">
+                    </div>
+                </div>
+
+                <button id="save-names-btn">Salva nomi</button>
+                <p id="error-box"></p>
+
+                <div class="scoreboard">
+                    <div class="score x">
+                        <h4 id="label-x">Giocatore X</h4>
+                        <h2 id="score-x">0</h2>
+                    </div>
+                    <div class="score">
+                        <h4>Pareggi</h4>
+                        <h2 id="score-draw">0</h2>
+                    </div>
+                    <div class="score o">
+                        <h4 id="label-o">Giocatore O</h4>
+                        <h2 id="score-o">0</h2>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <button id="undo-btn">Annulla mossa</button>
+                    <button id="new-game-btn">Nuova partita</button>
+                </div>
+                <button id="reset-score-btn">Azzera punteggio</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
