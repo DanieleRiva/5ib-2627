@@ -9,12 +9,14 @@ const errorBox = document.getElementById("error-box");
 
 const userGrades = document.getElementById("user-grades");
 
-const grades = [];
+const title = document.getElementById("titoloBellissimo");
+
+const grades = JSON.parse(localStorage.getItem("provaVoti")) || [];
+updateUI();
 
 // Event Listener
 addGradeBtn.addEventListener("click", () => {
     if (validateData()) {
-        errorBox.innerText = "";
         grades.push(
             {
                 "subject": newGradeSubject.value,
@@ -23,12 +25,17 @@ addGradeBtn.addEventListener("click", () => {
             }
         );
 
+        localStorage.setItem("provaVoti", JSON.stringify(grades));
+        console.log(localStorage.getItem("provaVoti"));
+
         grades.forEach(grade => {
             // ` => alt + 9 + 6
             console.log(`Materia: ${grade.subject}, Info: ${grade.gradeInfo}, Score: ${grade.score}`);
         });
 
         updateUI();
+        calculateAvg();
+        calculatePercentage();
     }
     else {
         errorBox.innerText = "Dati non validi.";
@@ -36,6 +43,26 @@ addGradeBtn.addEventListener("click", () => {
 });
 
 avgGradeBtn.addEventListener("click", () => {
+    calculateAvg();
+});
+
+function calculatePercentage() {
+    let count = 0;
+
+    grades.forEach(grade => {
+        if (parseFloat(grade.score) >= 6) {
+            count++;
+        }
+    });
+
+    const percentage = ((count / grades.length) * 100).toFixed(2);
+    title.innerText = `REGISTRO ELETTRONICO (${percentage}%)`;
+
+    const className = classifyPercentage(percentage);
+    title.className = className;
+}
+
+function calculateAvg() {
     let sum = 0;
 
     grades.forEach(grade => {
@@ -47,7 +74,7 @@ avgGradeBtn.addEventListener("click", () => {
 
     const className = classifyScore(avg);
     avgGradeBtn.className = className;
-});
+}
 
 function updateUI() {
     userGrades.innerHTML = "";
@@ -80,6 +107,24 @@ function validateData() {
     }
 
     return false;
+}
+
+function classifyPercentage(percentage) {
+    percentage = parseFloat(percentage);
+
+    if (!percentage || percentage < 0 || percentage > 100) {
+        return false;
+    }
+
+    if (percentage < 50) {
+        return "red";
+    } else if (percentage >= 50 && percentage < 60) {
+        return "yellow";
+    } else if (percentage >= 60 && percentage < 100) {
+        return "green";
+    } else {
+        return "purple";
+    }
 }
 
 function classifyScore(score) {
